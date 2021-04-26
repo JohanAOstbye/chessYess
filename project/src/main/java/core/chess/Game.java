@@ -50,7 +50,7 @@ public class Game {
       .collect(Collectors.toList());
   }
 
-  public String move(String stringMove) throws CloneNotSupportedException {
+  public String move(String stringMove) {
     Move move = new Move(stringMove);
     Optional<Piece> optPiece = null;
 
@@ -61,8 +61,6 @@ public class Game {
     ) {
       return "invalid castling";
     }
-
-    Board oldBoard = (Board) board.clone();
 
     try {
       switch (move.getPiece()) {
@@ -181,7 +179,6 @@ public class Game {
           break;
       }
     } catch (Exception e) {
-      board = oldBoard;
       return e.getMessage();
     }
 
@@ -190,17 +187,27 @@ public class Game {
       System.out.println(
         "moving " + movingPiece.getChar() + movingPiece.getStringCordinates()
       );
+      String oldCordinates = movingPiece.getStringCordinates();
       movingPiece.move(move.getTargetCordinates(), board);
       if (board.getKing(movingPiece.isWhite()).IsInCheck(board)) {
-        board = oldBoard;
+        movingPiece.move(oldCordinates, board); //revert move
         return "move failed";
       } else {
+        movingPiece.move(move.getTargetCordinates(), board);
+        // if(movingPiece instanceof King ){
+        //   movingPiece = (King) movingPiece;
+        //   movingPiece.removeCastling();
+        // }
+        //   else if (movingPiece instanceof Rook) {
+        //     movingPiece = (Rook) movingPiece;
+        //     movingPiece.removeCastling();
+        // }
         whiteToMove = !whiteToMove;
         recordMove(move.toString());
         return "move made";
       }
     }
-    return "piece doesn exist";
+    return "piece doesnt exist";
   }
 
   private void recordMove(String move) {
@@ -252,13 +259,9 @@ public class Game {
     newGame();
     for (String move : moves) {
       String[] turn = move.split(" ");
-      try {
-        move(turn[0]);
-        if(turn.length > 1) {
-          move(turn[1]);
-        }
-      } catch (CloneNotSupportedException e) {
-        System.out.println("huston we have problem");
+      move(turn[0]);
+      if (turn.length > 1) {
+        move(turn[1]);
       }
     }
   }
@@ -266,7 +269,7 @@ public class Game {
   public List<String> getMoves() {
     List<String> currentMoves = new ArrayList<String>();
     currentMoves.addAll(moves);
-    if(currentMove != ""){
+    if (currentMove != "") {
       currentMoves.add(currentMove);
     }
     return currentMoves;

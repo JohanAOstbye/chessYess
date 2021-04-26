@@ -38,6 +38,7 @@ public class AppController implements Initializable{
             } else {
                 System.out.println("black to move");
             }
+            txtMove.setText("");
         }
     }
 

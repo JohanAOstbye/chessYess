@@ -16,7 +16,7 @@ public class Move {
     'R'
   );
 
-  private static String columns = "abcdefgh";
+  private static String columns = "abcdefghx";
 
   public Move(String move) {
     this.move = move;
@@ -38,9 +38,16 @@ public class Move {
       }
       //TODO future: add promoting
     }
-    column = Character.toString(move.charAt(length-2));
+    column = Character.toString(move.charAt(1));
+    if(piece == 'P'){
+      column = Character.toString(move.charAt(0));
+    }
     if(columns.contains(column)) {
-      column = "x";
+      column = "x"; //no target
+    } else if(columns.contains(column.toLowerCase())) {
+      column = column.toLowerCase(); // target spesific
+    } else {
+      column = null;
     }
 
     targetCordinates = move.substring(length - 2);

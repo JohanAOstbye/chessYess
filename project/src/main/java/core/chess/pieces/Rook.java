@@ -22,19 +22,14 @@ public class Rook extends Piece {
         return 'R';
     }
 
-    public boolean move(String cordinates, Board board) {
-        if(this.canMoveTo(cordinates, board)) {
-            canCastle = false;
-            Square targetSquare = board.getSquare(cordinates);
+    public void move(String cordinates, Board board) {
+        Square targetSquare = board.getSquare(cordinates);
 
             if(targetSquare.getPiece() != null) {
                 capture(targetSquare);
             }
 
             targetSquare.setPiece(this);
-            return true;
-        }
-        return false;
     }
 
     public boolean canMoveTo(String cordinates, Board board) {
@@ -82,4 +77,8 @@ public class Rook extends Piece {
     public boolean canCastle() {
         return canCastle;
     }
+
+    public void removeCastle() {
+        canCastle = false;
+      }
 }

@@ -1,15 +1,14 @@
 package core.chess;
 
-import core.chess.Board;
-import core.chess.Move;
-import core.chess.pieces.Pawn;
-import core.chess.pieces.Queen;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import core.chess.Board;
+import core.chess.Move;
+import core.chess.pieces.Pawn;
+import core.chess.pieces.Queen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,9 +67,20 @@ public class MoveTest {
     Move move1 = new Move("Qxb7");
     Move move2 = new Move("Qa6");
 
-    assertEquals(move1.getColumn(), "b");
-    assertEquals(move2.getColumn(), "a");
-    assertNotEquals(move2.getColumn(), "b");
+    assertEquals("x", move1.getColumn());
+    assertNotEquals("b", move2.getColumn());
+    assertEquals("x", move2.getColumn());
+    assertNotEquals("a", move2.getColumn());
+
+    for (int i = 1; i <= 8; i++) {
+      Move move3 = new Move("RAe" + i);
+      assertEquals("a", move3.getColumn());
+      assertNotEquals("x", move3.getColumn());
+    }
+
+    Move move4 = new Move("Ed4");
+    assertEquals("e", move4.getColumn());
+    assertNotEquals("x", move4.getColumn());
   }
 
   @Test

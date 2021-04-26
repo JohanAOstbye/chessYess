@@ -31,7 +31,7 @@ public class King extends Piece {
   public boolean IsInCheck(String cordinates, Board board) {
     List<Piece> threateningPieces = board.getActivePieces(!this.isWhite())
     .stream()
-    .filter(p -> p.canMoveTo(this.getStringCordinates(), board))
+    .filter(p -> p.canMoveTo(cordinates, board))
     .collect(Collectors.toList());
     if(threateningPieces.isEmpty()) {
       return false;
@@ -72,28 +72,23 @@ public class King extends Piece {
   }
 
   @Override
-  public boolean move(String cordinates, Board board) {
-    if (this.canMoveTo(cordinates, board)) {
-      canCastle = false;
-      Square targetSquare = board.getSquare(cordinates);
+  public void move(String cordinates, Board board) {
+    
+    Square targetSquare = board.getSquare(cordinates);
 
-      if (targetSquare.getPiece() != null) {
-        capture(targetSquare);
-      }
-
-      targetSquare.setPiece(this);
-      return true;
+    if (targetSquare.getPiece() != null) {
+      capture(targetSquare);
     }
-    return false;
+
+    targetSquare.setPiece(this);
   }
 
   public boolean canCastle() {
     return canCastle;
   }
 
-  public boolean castle(boolean isQueenSide) {
-    if (isQueenSide) {}
-    return false;
+  public void removeCastle() {
+    canCastle = false;
   }
 
   public boolean isCheckMate(Board board, Piece threateningPiece) {
